@@ -47,16 +47,16 @@ var map = L.map("map-canvas", {
 
 // 2. aerial photo * not working at this moment (see Assignment)
 //    - can be switched on/off by toggle thru L.control.layers (see below in this script)
-var wms_aerial_url = "https://geodata1.nationaalgeoregister.nl/luchtfoto/wms?";
+var wms_aerial_url = "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?";
 var basemap_aerial = new L.tileLayer.wms(wms_aerial_url, {
-  layers: ["luchtfoto_png"],
+  layers: ["Actueel_orthoHR"],
   styles: "",
   format: "image/png",
   transparent: true,
   pointerCursor: true,
 });
 basemap_aerial.getAttribution = function () {
-  return 'Luchtfoto WMS <a href="https://www.kadaster.nl">Kadaster</a>.';
+  return 'Luchtfoto WMS <a href="https://service.pdok.nl">Kadaster</a>.';
 };
 
 // 3. a thematic WMS as overlay map
@@ -70,17 +70,41 @@ var sound = new L.tileLayer.wms(wms_sound_url, {
     '© <a href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search#/metadata/cb1ac266-b9e7-4adf-a2a2-d04f5d1f1d2c?tab=general"> Rijkswaterstaat</a>',
   pointerCursor: true,
 });
+  
+  var wms_parcel_url = "http://localhost:8080/geoserver/Shawn/wms?";
+  var parcel = new L.tileLayer.wms(wms_parcel_url, {
+    layers: ["Shawn:parcels"],
+    styles: "",
+    format: "image/png",
+    transparent: true,
+    attribution:
+      '© <a href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search#/metadata/cb1ac266-b9e7-4adf-a2a2-d04f5d1f1d2c?tab=general"> Rijkswaterstaat</a>',
+    pointerCursor: true,
+  });
+
+  var wms_n_layer_url = "http://localhost:8080/geoserver/Shawn/wms?";
+  var n_layer = new L.tileLayer.wms(wms_n_layer_url, {
+    layers: ["Shawn::GEBOUW_VLAK", "Shawn:TERREIN_VLAK" ],
+    styles: ["Shawn:gebouw_vlak","Shawn:terrein_vlak"],
+    format: "image/png",
+    transparent: true,
+    pointerCursor: true,
+  });
 
 var overlays = {
   "Road noise [WMS]": sound,
+  "Parcels [WMS]": parcel,
+  "Newlayers [WMS]": n_layer,
 };
+
+
 
 var baseLayers = {
   "BRT-Achtergrondkaart [WMTS]": brtRegular,
   "BRT-Achtergrondkaart Grijs [WMTS]": brtGrijs,
   "BRT-Achtergrondkaart Pastel [WMTS]": brtPastel,
   "BRT-Achtergrondkaart Water [WMTS]": brtWater,
-  "Aerial photo [WMS]": basemap_aerial,
+  "Aerial photo [WMS]": basemap_aerial
 };
 
 L.control.layers(baseLayers, overlays).addTo(map);

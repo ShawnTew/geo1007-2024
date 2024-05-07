@@ -110,6 +110,7 @@ var allFunctions = function () {
         textarea.cols = "60";
         textarea.style.border = "solid 1px black";
         textarea.textContent = this.responseText;
+        document.querySelector("main .forDebug2").innerHTML="";
         document.querySelector("main .forDebug2").append(textarea);
         var xmlData = this.responseXML;
         handleXMLResponse(xmlData);
@@ -131,6 +132,7 @@ var allFunctions = function () {
     if (typeof feature !== "undefined" && feature.childNodes.length > 0) {
       var headerRow = document.createElement("tr");
       headerRow.innerHTML = "<th>Property name</th><th>value</th>";
+      document.querySelector("#xmlDataAsTable").innerHTML="";
       document.querySelector("#xmlDataAsTable").append(headerRow);
       for (var i = 0; i < feature.childNodes.length; i++) {
         if (feature.childNodes[i].nodeName != "#text") {
@@ -158,6 +160,7 @@ var allFunctions = function () {
     var img = document.createElement("img");
     img.style.display = "none";
     img.src = wms_request;
+    document.querySelector("main .mapDiv").innerHTML="";
     document.querySelector("main .mapDiv").append(img);
     img.style.display = "block";
   };
